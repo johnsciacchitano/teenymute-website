@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>teenymute - Universal Microphone Mute For Your Mac</title>
+    <meta name="description" content="A lightweight macOS menu bar app that gives you a universal microphone mute toggle with a global keyboard shortcut. Works across Zoom, Meet, Teams, and every mic-using app. $9.99 lifetime license.">
+    <meta property="og:title" content="teenymute - Universal Microphone Mute For Your Mac">
+    <meta property="og:description" content="A lightweight macOS menu bar app that gives you a universal microphone mute toggle with a global keyboard shortcut. Works across Zoom, Meet, Teams, and every mic-using app. $9.99 lifetime license.">
+    <meta property="og:image" content="https://teenymute.com/images/og-image.png">
+    <meta property="og:url" content="https://teenymute.com">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Fraunces';
+            src: url('fonts/Fraunces_72pt-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --orange: #FF6B35;
+            --orange-hover: #E85A24;
+            --orange-light: #FFF3EE;
+            --orange-glow: rgba(255, 107, 53, 0.15);
+            --text-primary: #1A1A2E;
+            --text-secondary: #5A5A72;
+            --text-muted: #8E8EA0;
+            --bg-white: #FFFFFF;
+            --bg-cream: #FAFAF8;
+            --bg-light: #F5F5F3;
+            --border: #E8E8E4;
+            --border-light: #F0F0EC;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+            --shadow-xl: 0 20px 60px rgba(0,0,0,0.10), 0 8px 20px rgba(0,0,0,0.06);
+            --shadow-screenshot: 0 16px 48px rgba(0,0,0,0.12), 0 6px 16px rgba(0,0,0,0.06);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --max-width: 1200px;
+            --font-display: 'DM Serif Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+
+            /* App-specific semantic colors for status indicators */
+            --green-muted: #22C55E;
+            --green-light: #ECFDF5;
+            --red-muted: #EF4444;
+            --red-light: #FEF2F2;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-white);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .brand-name {
+            font-family: 'Fraunces', serif;
+            font-weight: 700;
+        }
+
+        /* -- NAV -- */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--border-light);
+            transition: box-shadow 0.3s ease;
+        }
+
+        nav.scrolled {
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 40px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .nav-brand img {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+        }
+
+        .nav-brand .brand-name {
+            font-size: 20px;
+        }
+
+        .nav-links { display: flex; gap: 10px; align-items: center; }
+
+        /* -- BUTTONS -- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 22px;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            line-height: 1.4;
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            color: #fff;
+            box-shadow: 0 2px 8px var(--orange-glow);
+        }
+        .btn-primary:hover {
+            background: var(--orange-hover);
+            box-shadow: 0 4px 16px rgba(255, 107, 53, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1.5px solid var(--border);
+        }
+        .btn-outline:hover {
+            border-color: var(--orange);
+            color: var(--orange);
+            background: var(--orange-light);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--orange);
+            padding: 8px 16px;
+        }
+        .btn-ghost:hover {
+            text-decoration: underline;
+        }
+
+        .btn-large {
+            padding: 14px 32px;
+            font-size: 16px;
+            border-radius: var(--radius-md);
+        }
+
+        /* -- HERO -- */
+        .hero {
+            padding: 140px 40px 80px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255,107,53,0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 720px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(42px, 6vw, 64px);
+            line-height: 1.1;
+            margin-bottom: 16px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            color: var(--text-primary);
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--orange);
+        }
+
+        .hero-sub {
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .hero-body {
+            font-size: 17px;
+            color: var(--text-muted);
+            max-width: 540px;
+            margin: 0 auto 36px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 64px;
+        }
+
+        .hero-media {
+            max-width: 640px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .hero-media img {
+            width: 100%;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-screenshot);
+        }
+
+        /* -- SECTION UTILITIES -- */
+        .section-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 580px;
+            margin: 0 auto 56px;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(30px, 4vw, 42px);
+            font-weight: 700;
+            margin-bottom: 14px;
+            line-height: 1.15;
+            color: var(--text-primary);
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 17px;
+            max-width: 480px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* -- STATUS INDICATOR CARDS -- */
+        .status-section {
+            padding: 90px 40px;
+            background: var(--bg-cream);
+        }
+
+        .status-cards {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+
+        .status-card {
+            background: var(--bg-white);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 36px 40px;
+            text-align: center;
+            min-width: 240px;
+            max-width: 320px;
+            flex: 1;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .status-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .status-card.unmuted {
+            border-color: var(--green-muted);
+        }
+
+        .status-card.muted {
+            border-color: var(--red-muted);
+        }
+
+        .status-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-bottom: 14px;
+        }
+
+        .status-dot.green {
+            background: var(--green-muted);
+            box-shadow: 0 0 12px rgba(34, 197, 94, 0.4);
+        }
+
+        .status-dot.red {
+            background: var(--red-muted);
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+        }
+
+        .status-card h3 {
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        .status-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.55;
+        }
+
+        .status-card .status-label {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 14px;
+        }
+
+        .status-card.unmuted .status-label {
+            background: var(--green-light);
+            color: var(--green-muted);
+        }
+
+        .status-card.muted .status-label {
+            background: var(--red-light);
+            color: var(--red-muted);
+        }
+
+        /* -- ALTERNATING SHOWCASE -- */
+        .showcase-section {
+            padding: 100px 40px;
+            background: var(--bg-white);
+        }
+
+        .showcase-row {
+            display: flex;
+            align-items: center;
+            gap: 64px;
+            margin-bottom: 100px;
+        }
+
+        .showcase-row:last-child { margin-bottom: 0; }
+        .showcase-row.reverse { flex-direction: row-reverse; }
+
+        .showcase-text {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .showcase-text h3 {
+            font-family: var(--font-display);
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            line-height: 1.2;
+            color: var(--text-primary);
+        }
+
+        .showcase-text p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            line-height: 1.65;
+        }
+
+        .showcase-image {
+            flex: 1.2;
+            min-width: 300px;
+        }
+
+        .showcase-image img {
+            width: 100%;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* -- CTA BREAK -- */
+        .cta-break {
+            padding: 48px 40px;
+            text-align: center;
+            background: var(--bg-cream);
+        }
+
+        .cta-break .btn { margin: 0 6px; }
+
+        /* -- CATEGORY GRID (App Compatibility) -- */
+        .compat-section {
+            padding: 90px 40px;
+            background: var(--bg-cream);
+        }
+
+        .compat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .compat-card {
+            text-align: center;
+            padding: 28px 20px;
+        }
+
+        .compat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            background: var(--orange-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+        }
+
+        .compat-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--orange);
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .compat-card h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .compat-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* -- MAC WINDOW FRAME -- */
+        .window-section {
+            padding: 90px 40px;
+            background: var(--bg-white);
+        }
+
+        .mac-window {
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .mac-titlebar {
+            background: #2A2A2A;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mac-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .mac-dot.red { background: #FF5F57; }
+        .mac-dot.yellow { background: #FEBC2E; }
+        .mac-dot.green { background: #28C840; }
+
+        .mac-window-body {
+            background: #1E1E1E;
+        }
+
+        .mac-window-body img {
+            width: 100%;
+            display: block;
+        }
+
+        /* -- FEATURE CARD GRID -- */
+        .features-section {
+            padding: 90px 40px;
+            background: var(--bg-cream);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: var(--bg-white);
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            padding: 28px;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--text-muted);
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            font-size: 28px;
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        /* -- FAQ -- */
+        .faq-section {
+            padding: 100px 40px;
+            background: var(--bg-white);
+        }
+
+        .faq-list {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .faq-item:first-child {
+            border-top: 1px solid var(--border);
+        }
+
+        .faq-question {
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            color: var(--text-primary);
+            padding: 18px 0;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-family: var(--font-body);
+        }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 20px;
+            color: var(--text-muted);
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+            margin-left: 16px;
+        }
+
+        .faq-item.open .faq-question::after {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.65;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 250px;
+            padding-bottom: 18px;
+        }
+
+        .faq-answer a {
+            color: var(--orange);
+            text-decoration: none;
+        }
+
+        .faq-answer a:hover {
+            text-decoration: underline;
+        }
+
+        /* -- PRICING -- */
+        .pricing-section {
+            padding: 100px 40px;
+            text-align: center;
+            background: var(--bg-cream);
+        }
+
+        .pricing-card {
+            max-width: 400px;
+            margin: 0 auto;
+            background: var(--bg-white);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 48px 40px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 20%;
+            right: 20%;
+            height: 3px;
+            background: var(--orange);
+            border-radius: 0 0 3px 3px;
+        }
+
+        .pricing-card .icon-wrap {
+            margin-bottom: 18px;
+        }
+
+        .pricing-card .icon-wrap img {
+            width: 56px; height: 56px;
+            border-radius: 13px;
+        }
+
+        .pricing-label {
+            font-weight: 700;
+            font-size: 17px;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .pricing-amount {
+            font-family: var(--font-display);
+            font-size: 52px;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .pricing-note {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .pricing-card .btn {
+            width: 100%;
+            justify-content: center;
+            font-size: 16px;
+            padding: 14px 32px;
+            border-radius: var(--radius-md);
+            margin-bottom: 10px;
+        }
+
+        .pricing-card .btn:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .pricing-trial {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: 14px;
+        }
+
+        /* -- FOOTER -- */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 32px 40px;
+            background: var(--bg-white);
+        }
+
+        .footer-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .footer-row .brand-name {
+            font-size: 16px;
+            color: var(--text-primary);
+        }
+
+        .footer-row .made-for-mac {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .footer-row .footer-contact {
+            font-size: 14px;
+            color: var(--text-muted);
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .footer-contact a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .footer-contact a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-links {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            margin: 0 8px;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-links .sep {
+            color: var(--border);
+        }
+
+        .footer-copyright {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* -- DOWNLOAD MODAL -- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-box {
+            background: var(--bg-white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            padding: 48px 40px;
+            max-width: 440px;
+            width: 90%;
+            position: relative;
+            transform: translateY(16px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-light);
+            color: var(--text-muted);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--border);
+        }
+
+        .modal-box h3 {
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .modal-box .modal-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .modal-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-form input[type="email"] {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-body);
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .modal-form input[type="email"]:focus {
+            border-color: var(--orange);
+        }
+
+        .modal-form button {
+            padding: 12px 24px;
+            background: var(--orange);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .modal-form button:hover {
+            background: var(--orange-hover);
+        }
+
+        .modal-success {
+            display: none;
+            text-align: center;
+            padding: 12px 0;
+        }
+
+        .modal-success.show {
+            display: block;
+        }
+
+        .modal-success .checkmark {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #E8F5EC;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+            font-size: 24px;
+        }
+
+        .modal-success p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .modal-success p strong {
+            color: var(--text-primary);
+        }
+
+        /* -- FADE-UP ANIMATIONS -- */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* -- RESPONSIVE 900px -- */
+        @media (max-width: 900px) {
+            .nav-inner { padding: 0 24px; }
+            .hero { padding: 120px 24px 60px; }
+            .compat-grid { grid-template-columns: repeat(2, 1fr); }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .showcase-row,
+            .showcase-row.reverse {
+                flex-direction: column;
+                gap: 36px;
+            }
+            .showcase-section,
+            .status-section,
+            .compat-section,
+            .features-section,
+            .faq-section,
+            .pricing-section,
+            .window-section,
+            .cta-break { padding-left: 24px; padding-right: 24px; }
+            footer { padding-left: 24px; padding-right: 24px; }
+        }
+
+        /* -- RESPONSIVE 640px -- */
+        @media (max-width: 640px) {
+            .nav-links .btn-outline { display: none; }
+            .nav-links .btn { font-size: 13px; padding: 8px 14px; }
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .hero-buttons .btn {
+                max-width: 300px;
+                width: 100%;
+            }
+            .compat-grid { grid-template-columns: repeat(2, 1fr); }
+            .features-grid { grid-template-columns: 1fr; }
+            .status-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+            .status-card {
+                max-width: 100%;
+                width: 100%;
+            }
+            .footer-row {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+            .footer-row .footer-contact {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .modal-form {
+                flex-direction: column;
+            }
+            .cta-break .btn {
+                display: block;
+                margin: 0 auto 10px;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="nav-inner">
+            <a href="#" class="nav-brand">
+                <img src="images/app-icon.png" alt="teenymute icon">
+                <span class="brand-name">teenymute</span>
+            </a>
+            <div class="nav-links">
+                <a href="#" class="btn btn-outline download-trigger">Download App</a>
+                <!-- TODO: Replace with Polar checkout URL -->
+                <a href="#" class="btn btn-primary">Purchase License: $9.99</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Universal Mic Mute <em>For Mac</em></h1>
+            <p class="hero-sub">One shortcut to mute your mic across every app. Always visible. Always ready.</p>
+            <p class="hero-body">
+                <span class="brand-name">teenymute</span> lives in your menu bar and gives you a universal microphone mute toggle that works across Zoom, Meet, Teams, FaceTime, and every other mic-using app. Push-to-talk, global hotkey, HUD overlay. 3-day free trial, then $9.99 once.
+            </p>
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-outline btn-large download-trigger">Download App</a>
+                <!-- TODO: Replace with Polar checkout URL -->
+                <a href="#" class="btn btn-primary btn-large">Purchase License: $9.99</a>
+            </div>
+            <div class="hero-media fade-up">
+                <img src="images/screenshot-hero.webp" alt="teenymute menu bar showing microphone status indicator and dropdown controls">
+            </div>
+        </div>
+    </section>
+
+    <!-- STATUS INDICATOR CARDS -->
+    <section class="status-section">
+        <div class="section-inner">
+            <div class="section-header fade-up">
+                <h2>Your mic status. Always visible.</h2>
+                <p>A color-coded menu bar icon shows your microphone state at a glance. No guessing, no fumbling.</p>
+            </div>
+            <div class="status-cards fade-up">
+                <div class="status-card unmuted">
+                    <div class="status-dot green"></div>
+                    <h3>Unmuted</h3>
+                    <p>Green means your microphone is live and picking up audio. You're being heard.</p>
+                    <span class="status-label">Mic On</span>
+                </div>
+                <div class="status-card muted">
+                    <div class="status-dot red"></div>
+                    <h3>Muted</h3>
+                    <p>Red means your microphone is off at the system level. Nothing gets through.</p>
+                    <span class="status-label">Mic Off</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SHOWCASE: KEY FEATURES -->
+    <section class="showcase-section">
+        <div class="section-inner">
+            <div class="showcase-row fade-up">
+                <div class="showcase-text">
+                    <h3>One hotkey. Every app.</h3>
+                    <p>Press Option-Shift-M from anywhere to instantly mute or unmute your microphone. No need to find the right mute button in Zoom, Teams, or Meet. <span class="brand-name">teenymute</span> mutes at the system level so it works universally.</p>
+                </div>
+                <div class="showcase-image">
+                    <img src="images/screenshot-hotkey.webp" alt="teenymute global hotkey muting microphone across Zoom and Teams">
+                </div>
+            </div>
+
+            <div class="showcase-row reverse fade-up">
+                <div class="showcase-text">
+                    <h3>Push-to-talk when you need it.</h3>
+                    <p>Hold the hotkey to temporarily unmute, release to re-mute. Perfect for noisy environments where you only want your mic live while you're speaking.</p>
+                </div>
+                <div class="showcase-image">
+                    <img src="images/screenshot-push-to-talk.webp" alt="teenymute push-to-talk mode indicator showing hold-to-unmute">
+                </div>
+            </div>
+
+            <div class="showcase-row fade-up">
+                <div class="showcase-text">
+                    <h3>HUD overlay on every toggle.</h3>
+                    <p>A subtle on-screen overlay confirms your mic state every time you toggle. See it on any display, in any app, so you always know whether you're muted.</p>
+                </div>
+                <div class="showcase-image">
+                    <img src="images/screenshot-hud.webp" alt="teenymute HUD overlay showing muted confirmation on screen">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA BREAK -->
+    <section class="cta-break">
+        <a href="#" class="btn btn-outline download-trigger">Download App</a>
+        <!-- TODO: Replace with Polar checkout URL -->
+        <a href="#" class="btn btn-primary">Purchase License: $9.99</a>
+    </section>
+
+    <!-- APP COMPATIBILITY GRID -->
+    <section class="compat-section">
+        <div class="section-inner">
+            <div class="section-header fade-up">
+                <h2>Works with every app that uses your mic.</h2>
+                <p><span class="brand-name">teenymute</span> mutes at the system level, so it works everywhere.</p>
+            </div>
+            <div class="compat-grid fade-up">
+                <div class="compat-card">
+                    <div class="compat-icon">
+                        <svg viewBox="0 0 24 24"><path d="M15 10l4.553-2.276A1 1 0 0 1 21 8.618v6.764a1 1 0 0 1-1.447.894L15 14"/><rect x="2" y="6" width="13" height="12" rx="2" ry="2"/></svg>
+                    </div>
+                    <h3>Zoom</h3>
+                    <p>Mute instantly without hunting for Zoom's own button.</p>
+                </div>
+                <div class="compat-card">
+                    <div class="compat-icon">
+                        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <h3>Google Meet</h3>
+                    <p>One shortcut replaces Meet's built-in mute toggle.</p>
+                </div>
+                <div class="compat-card">
+                    <div class="compat-icon">
+                        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    </div>
+                    <h3>Microsoft Teams</h3>
+                    <p>System-level mute that works in and out of calls.</p>
+                </div>
+                <div class="compat-card">
+                    <div class="compat-icon">
+                        <svg viewBox="0 0 24 24"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94"/><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </div>
+                    <h3>FaceTime</h3>
+                    <p>Mute FaceTime calls without touching the FaceTime UI.</p>
+                </div>
+                <div class="compat-card">
+                    <div class="compat-icon">
+                        <svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                    </div>
+                    <h3>Slack Huddles</h3>
+                    <p>Stay muted on Slack without switching windows.</p>
+                </div>
+                <div class="compat-card">
+                    <div class="compat-icon">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                    </div>
+                    <h3>Discord</h3>
+                    <p>Mute your mic in voice channels with one keystroke.</p>
+                </div>
+                <div class="compat-card">
+                    <div class="compat-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                    </div>
+                    <h3>Voice Memos</h3>
+                    <p>Control your mic input in any recording app.</p>
+                </div>
+                <div class="compat-card">
+                    <div class="compat-icon">
+                        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+                    </div>
+                    <h3>Any App</h3>
+                    <p>System-level mute means every mic-using app is covered.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAC WINDOW: SETTINGS -->
+    <section class="window-section">
+        <div class="section-inner">
+            <div class="section-header fade-up">
+                <h2>Your mic, your rules.</h2>
+                <p>Configure your hotkey, toggle mode, input device, and overlay from a clean settings window.</p>
+            </div>
+            <div class="mac-window fade-up">
+                <div class="mac-titlebar">
+                    <div class="mac-dot red"></div>
+                    <div class="mac-dot yellow"></div>
+                    <div class="mac-dot green"></div>
+                </div>
+                <div class="mac-window-body">
+                    <img src="images/screenshot-settings.webp" alt="teenymute settings window showing hotkey configuration, mode selection, and input device picker">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES GRID -->
+    <section class="features-section">
+        <div class="section-inner">
+            <div class="section-header fade-up">
+                <h2>Small app. Total mic control.</h2>
+                <p>Everything you need to manage your microphone, nothing you don't.</p>
+            </div>
+            <div class="features-grid fade-up">
+                <div class="feature-card">
+                    <span class="feature-icon">&#x2318;</span>
+                    <h3>Global Hotkey</h3>
+                    <p>Default Option-Shift-M, fully configurable. Mute or unmute from any app instantly.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">&#x1F3A4;</span>
+                    <h3>Push-to-Talk</h3>
+                    <p>Hold the hotkey to unmute. Release to re-mute. Hands-free noise control.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">&#x1F7E2;</span>
+                    <h3>Menu Bar Indicator</h3>
+                    <p>Color-coded icon shows your mic state at a glance. Green is live, red is muted.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">&#x1F4BB;</span>
+                    <h3>HUD Overlay</h3>
+                    <p>On-screen confirmation every time you toggle. Works on all displays.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">&#x1F50A;</span>
+                    <h3>Sound Feedback</h3>
+                    <p>Optional audio cue on mute and unmute so you know the state changed.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">&#x1F399;</span>
+                    <h3>Input Device Picker</h3>
+                    <p>Choose which microphone to control. Detects hot-plugged devices automatically.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">&#x1F5A5;</span>
+                    <h3>Multi-Display Support</h3>
+                    <p>HUD overlay appears on your active display, no matter how many monitors you use.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">&#x1F6E1;</span>
+                    <h3>System State Monitoring</h3>
+                    <p>Watches macOS audio state continuously. Stays in sync even if other apps change your mic.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">&#x1F680;</span>
+                    <h3>Launch at Login</h3>
+                    <p>Starts with your Mac so your mic control is always running. Toggle in settings.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+        <div class="section-inner">
+            <div class="section-header fade-up">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list fade-up">
+                <div class="faq-item">
+                    <button class="faq-question">How much does it cost?</button>
+                    <div class="faq-answer">$9.99 as a one-time payment. That's it. No subscription, no recurring charges, ever. All future updates are included.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Is this a subscription?</button>
+                    <div class="faq-answer">No. You pay once and own <span class="brand-name">teenymute</span> forever. There is no subscription and there never will be.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Is there a free trial?</button>
+                    <div class="faq-answer">Yes. <span class="brand-name">teenymute</span> comes with a 3-day free trial with full access to every feature. No credit card required.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">What macOS version do I need?</button>
+                    <div class="faq-answer">macOS 14 Sonoma or later.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Does it need an internet connection?</button>
+                    <div class="faq-answer">Only for a one-time license activation. All mic monitoring and muting happens locally on your Mac. <span class="brand-name">teenymute</span> works fully offline after that.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Is my data private?</button>
+                    <div class="faq-answer">Completely. <span class="brand-name">teenymute</span> never records or transmits your audio. It only controls the mic input level. No analytics, no telemetry, no cloud sync.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Does it work with all microphones?</button>
+                    <div class="faq-answer">Yes. <span class="brand-name">teenymute</span> controls whichever input device you select in settings. It detects USB mics, headsets, AirPods, and built-in mics, and handles hot-plugging automatically.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">How do I report a bug?</button>
+                    <div class="faq-answer">Email <a href="mailto:contact@teenyapps.com">contact@teenyapps.com</a> and I'll respond within 1 business day.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Can I request a feature?</button>
+                    <div class="faq-answer">Yes! Email <a href="mailto:contact@teenyapps.com">contact@teenyapps.com</a> or use the feedback form linked in the app's settings.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="pricing-section" id="download">
+        <div class="section-inner">
+            <div class="section-header fade-up">
+                <h2>One price. Forever.</h2>
+            </div>
+            <div class="pricing-card fade-up">
+                <div class="icon-wrap">
+                    <img src="images/app-icon.png" alt="teenymute icon">
+                </div>
+                <div class="pricing-label">Lifetime License</div>
+                <div class="pricing-amount">$9.99</div>
+                <div class="pricing-note">One-time payment. No subscription. Ever.</div>
+                <!-- TODO: Replace with Polar checkout URL -->
+                <a href="#" class="btn btn-primary">Purchase License: $9.99</a>
+                <a href="#" class="btn btn-outline download-trigger">Download App</a>
+                <p class="pricing-trial">3-day free trial. No credit card required.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-row">
+                <span class="brand-name">teenymute</span>
+                <span class="made-for-mac">Made for Mac</span>
+                <div class="footer-contact">
+                    <a href="mailto:contact@teenyapps.com">contact@teenyapps.com</a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <a href="privacy.html">Privacy Policy</a>
+                <span class="sep">|</span>
+                <a href="terms.html">Terms and Conditions</a>
+            </div>
+            <div class="footer-copyright">&copy; 2026 teenymute. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <!-- DOWNLOAD MODAL -->
+    <div class="modal-overlay" id="downloadModal">
+        <div class="modal-box">
+            <button class="modal-close">&times;</button>
+            <div class="modal-content">
+                <h3>Coming Soon</h3>
+                <p class="modal-desc"><span class="brand-name">teenymute</span> is almost ready. Leave your email and we'll let you know the moment it's available for download.</p>
+                <div class="modal-form">
+                    <input type="email" id="modalEmail" placeholder="you@email.com" autocomplete="email">
+                    <button type="button" id="modalSubmit">Notify Me</button>
+                </div>
+            </div>
+            <div class="modal-success">
+                <div class="checkmark">&#x2714;</div>
+                <p><strong>You're on the list.</strong><br>We'll email you as soon as <span class="brand-name">teenymute</span> is ready to download.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // -- Nav scroll shadow --
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 10);
+        });
+
+        // -- FAQ toggle --
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => {
+                q.parentElement.classList.toggle('open');
+            });
+        });
+
+        // -- Download modal --
+        const modal = document.getElementById('downloadModal');
+        const modalContent = modal.querySelector('.modal-content');
+        const modalSuccess = modal.querySelector('.modal-success');
+        const modalEmail = document.getElementById('modalEmail');
+        const modalSubmit = document.getElementById('modalSubmit');
+
+        function openModal() {
+            modal.classList.add('active');
+            modalContent.style.display = 'block';
+            modalSuccess.classList.remove('show');
+            modalEmail.value = '';
+            setTimeout(() => modalEmail.focus(), 100);
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        document.querySelectorAll('.download-trigger').forEach(trigger => {
+            trigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                openModal();
+            });
+        });
+
+        modal.querySelector('.modal-close').addEventListener('click', closeModal);
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        modalSubmit.addEventListener('click', () => {
+            const email = modalEmail.value.trim();
+            if (email && email.includes('@')) {
+                modalContent.style.display = 'none';
+                modalSuccess.classList.add('show');
+            }
+        });
+
+        modalEmail.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') modalSubmit.click();
+        });
+
+        // -- Fade-up animations --
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
