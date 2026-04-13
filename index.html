@@ -1009,7 +1009,6 @@
             </a>
             <div class="nav-links">
                 <a href="#" class="btn btn-outline download-trigger">Download App</a>
-                <!-- TODO: Replace with Polar checkout URL -->
                 <a href="https://buy.polar.sh/polar_cl_LGGnszR5nHsuDiP5zukSuWXsi6lxI6nJp0y231xDZ2W" class="btn btn-primary">Purchase License: $4.99</a>
             </div>
         </div>
@@ -1025,7 +1024,6 @@
             </p>
             <div class="hero-buttons">
                 <a href="#" class="btn btn-outline btn-large download-trigger">Download App</a>
-                <!-- TODO: Replace with Polar checkout URL -->
                 <a href="https://buy.polar.sh/polar_cl_LGGnszR5nHsuDiP5zukSuWXsi6lxI6nJp0y231xDZ2W" class="btn btn-primary btn-large">Purchase License: $4.99</a>
             </div>
             <div class="hero-media fade-up">
@@ -1064,7 +1062,7 @@
             <div class="showcase-row fade-up">
                 <div class="showcase-text">
                     <h3>One hotkey. Every app.</h3>
-                    <p>Press Option-Shift-M from anywhere to instantly mute or unmute your microphone. No need to find the right mute button in Zoom, Teams, or Meet. <span class="brand-name">teenymute</span> mutes at the system level so it works universally.</p>
+                    <p>Press Option+Shift+M from anywhere to instantly mute or unmute your microphone, or set any custom shortcut you prefer. No need to find the right mute button in Zoom, Teams, or Meet. <span class="brand-name">teenymute</span> mutes at the system level so it works universally, and no Accessibility permissions are required.</p>
                 </div>
                 <div class="showcase-image">
                     <img src="images/screenshot-hotkey.webp" alt="teenymute global hotkey muting microphone across Zoom and Teams">
@@ -1096,7 +1094,6 @@
     <!-- CTA BREAK -->
     <section class="cta-break">
         <a href="#" class="btn btn-outline download-trigger">Download App</a>
-        <!-- TODO: Replace with Polar checkout URL -->
         <a href="https://buy.polar.sh/polar_cl_LGGnszR5nHsuDiP5zukSuWXsi6lxI6nJp0y231xDZ2W" class="btn btn-primary">Purchase License: $4.99</a>
     </section>
 
@@ -1209,7 +1206,7 @@
                 <div class="feature-card">
                     <span class="feature-icon">&#x1F7E2;</span>
                     <h3>Menu Bar Indicator</h3>
-                    <p>Color-coded icon shows your mic state at a glance. Green is live, red is muted.</p>
+                    <p>Color-coded icon shows your mic state at a glance. Green is live, red is muted. Click the icon to toggle instantly.</p>
                 </div>
                 <div class="feature-card">
                     <span class="feature-icon">&#x1F4BB;</span>
@@ -1241,6 +1238,21 @@
                     <h3>Launch at Login</h3>
                     <p>Starts with your Mac so your mic control is always running. Toggle in settings.</p>
                 </div>
+                <div class="feature-card">
+                    <span class="feature-icon">&#x1F513;</span>
+                    <h3>No Permissions Required</h3>
+                    <p>Unlike other mute utilities, <span class="brand-name">teenymute</span> does not require Accessibility permissions. Install and go.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">&#x1F5B1;</span>
+                    <h3>Right-Click Menu</h3>
+                    <p>Right-click the menu bar icon to see your mic state, active input device, trial status, settings, and quit.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">&#x1F4E6;</span>
+                    <h3>Native &amp; Lightweight</h3>
+                    <p>Built entirely with Apple frameworks. Zero third-party dependencies. No Dock icon, minimal resource usage.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -1270,15 +1282,23 @@
                 </div>
                 <div class="faq-item">
                     <button class="faq-question">Does it need an internet connection?</button>
-                    <div class="faq-answer">Only for a one-time license activation. All mic monitoring and muting happens locally on your Mac. <span class="brand-name">teenymute</span> works fully offline after that.</div>
+                    <div class="faq-answer">Only for license validation, which happens at launch and periodically. All mic monitoring and muting happens locally on your Mac with no internet required.</div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question">Is my data private?</button>
-                    <div class="faq-answer">Completely. <span class="brand-name">teenymute</span> never records or transmits your audio. It only controls the mic input level. No analytics, no telemetry, no cloud sync.</div>
+                    <div class="faq-answer">Completely. <span class="brand-name">teenymute</span> never records, listens to, or transmits any audio. It only controls the mute state of your microphone. No analytics, no telemetry, no cloud sync, no accounts.</div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question">Does it work with all microphones?</button>
-                    <div class="faq-answer">Yes. <span class="brand-name">teenymute</span> controls whichever input device you select in settings. It detects USB mics, headsets, AirPods, and built-in mics, and handles hot-plugging automatically.</div>
+                    <div class="faq-answer">Yes. <span class="brand-name">teenymute</span> controls whichever input device you select in settings. It detects USB mics, headsets, AirPods, and built-in mics, and handles hot-plugging automatically. For devices that don't support the standard macOS mute property, <span class="brand-name">teenymute</span> transparently falls back to volume control.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Does it require Accessibility permissions?</button>
+                    <div class="faq-answer">No. Unlike some competing mute utilities, <span class="brand-name">teenymute</span> does not require Accessibility permissions. The global hotkey works without any special permissions.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Does it run on Apple Silicon and Intel Macs?</button>
+                    <div class="faq-answer">Yes. <span class="brand-name">teenymute</span> is a universal binary that runs natively on both Apple Silicon and Intel Macs.</div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question">How do I report a bug?</button>
@@ -1305,7 +1325,6 @@
                 <div class="pricing-label">Lifetime License</div>
                 <div class="pricing-amount">$4.99</div>
                 <div class="pricing-note">One-time payment. No subscription. Ever.</div>
-                <!-- TODO: Replace with Polar checkout URL -->
                 <a href="https://buy.polar.sh/polar_cl_LGGnszR5nHsuDiP5zukSuWXsi6lxI6nJp0y231xDZ2W" class="btn btn-primary">Purchase License: $4.99</a>
                 <a href="#" class="btn btn-outline download-trigger">Download App</a>
                 <p class="pricing-trial">3-day free trial. No credit card required.</p>
@@ -1327,6 +1346,8 @@
                 <a href="privacy.html">Privacy Policy</a>
                 <span class="sep">|</span>
                 <a href="terms.html">Terms and Conditions</a>
+                <span class="sep">|</span>
+                <a href="https://teenyapps.com">Explore all TeenyApps</a>
             </div>
             <div class="footer-copyright">&copy; 2026 teenymute. All rights reserved.</div>
         </div>
