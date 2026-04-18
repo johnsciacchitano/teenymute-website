@@ -202,18 +202,32 @@
         }
 
         .hero h1 {
-            font-family: var(--font-display);
-            font-size: clamp(42px, 6vw, 64px);
-            line-height: 1.1;
-            margin-bottom: 16px;
+            font-family: 'Fraunces', serif;
+            font-size: clamp(48px, 7.5vw, 84px);
+            line-height: 0.98;
+            margin-bottom: 28px;
             font-weight: 700;
-            letter-spacing: -1px;
+            letter-spacing: -1.6px;
             color: var(--text-primary);
         }
 
-        .hero h1 em {
+        .hero h1 .underline-word {
             font-style: italic;
-            color: var(--orange);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero h1 .underline-word svg {
+            position: absolute;
+            bottom: -10px;
+            left: -3%;
+            width: 106%;
+            height: 20px;
+            stroke: var(--text-primary);
+            stroke-width: 3.5;
+            fill: none;
+            stroke-linecap: round;
+            pointer-events: none;
         }
 
         .hero-sub {
@@ -249,6 +263,489 @@
             width: 100%;
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-screenshot);
+        }
+
+        /* ========== HERO STAGE + MOCKUPS ========== */
+        .hero-stage {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 72px 40px 64px;
+            background:
+                radial-gradient(ellipse 60% 50% at 50% 20%, rgba(255, 107, 53, 0.08), transparent 70%),
+                linear-gradient(180deg, #f5f5f3, #ebebe6);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 44px;
+            position: relative;
+        }
+
+        .showcase-stage {
+            padding: 44px 20px;
+            background:
+                radial-gradient(ellipse 60% 50% at 50% 20%, rgba(255, 107, 53, 0.06), transparent 70%),
+                linear-gradient(180deg, #f5f5f3, #ebebe6);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            min-height: 300px;
+        }
+
+        /* ---------- macOS Menu Bar strip (mirrors what the user sees) ---------- */
+        .tm-menubar {
+            display: flex;
+            align-items: center;
+            height: 26px;
+            padding: 0 10px;
+            background: linear-gradient(180deg, rgba(34, 34, 42, 0.92), rgba(22, 22, 28, 0.95));
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 7px;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+            font-size: 11.5px;
+            color: rgba(237, 233, 227, 0.88);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+            gap: 1px;
+            width: 560px;
+            max-width: 100%;
+        }
+
+        .tm-mb-apple {
+            display: grid; place-items: center;
+            width: 14px; height: 14px;
+            margin-right: 8px;
+            opacity: 0.9;
+        }
+        .tm-mb-apple svg { width: 11px; height: 11px; }
+
+        .tm-mb-menu {
+            padding: 2px 7px;
+            border-radius: 4px;
+            letter-spacing: -0.1px;
+        }
+        .tm-mb-menu.primary { font-weight: 600; }
+
+        .tm-mb-spacer { flex: 1; }
+
+        .tm-mb-app-icon {
+            width: 22px; height: 22px;
+            display: grid; place-items: center;
+            border-radius: 4px;
+            color: #32D74B; /* macOS system green for active mic */
+            background: rgba(50, 215, 75, 0.12);
+            margin: 0 2px;
+        }
+        .tm-mb-app-icon.muted {
+            color: #FF453A; /* macOS system red for muted */
+            background: rgba(255, 69, 58, 0.15);
+        }
+        .tm-mb-app-icon.no-mic {
+            color: rgba(235, 235, 245, 0.4);
+            background: transparent;
+        }
+        .tm-mb-app-icon svg { width: 13px; height: 13px; }
+
+        .tm-mb-status {
+            display: flex; align-items: center;
+            padding: 0 4px;
+            opacity: 0.7;
+        }
+        .tm-mb-status svg { width: 12px; height: 12px; }
+
+        .tm-mb-clock {
+            font-size: 11px;
+            padding: 0 4px 0 6px;
+            letter-spacing: 0.1px;
+        }
+
+        /* ---------- macOS HUD overlay (mirrors OverlayContentView) ---------- */
+        .tm-hud {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 200px;
+            padding: 14px 20px;
+            background: rgba(20, 20, 24, 0.72);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border: 0.5px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .tm-hud svg {
+            width: 22px; height: 22px;
+            color: #fff;
+        }
+
+        .tm-hud-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.95);
+            letter-spacing: -0.2px;
+        }
+
+        /* ---------- Showcase: Hotkey + apps ---------- */
+        .tm-hotkey-visual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .tm-keyrow {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .tm-key {
+            min-width: 46px;
+            height: 46px;
+            padding: 0 12px;
+            background: linear-gradient(180deg, #fafafa, #ededed);
+            border: 1px solid #c8c8c4;
+            border-bottom-width: 2px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .tm-key .symbol {
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        .tm-key .label {
+            font-size: 9px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 2px;
+            letter-spacing: 0.3px;
+        }
+
+        .tm-plus {
+            color: var(--text-muted);
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        .tm-arrow-down {
+            width: 2px;
+            height: 28px;
+            background: var(--border);
+            position: relative;
+        }
+        .tm-arrow-down::after {
+            content: '';
+            position: absolute;
+            left: -5px; bottom: -1px;
+            width: 12px; height: 12px;
+            border-right: 2px solid var(--border);
+            border-bottom: 2px solid var(--border);
+            transform: rotate(45deg);
+        }
+
+        .tm-apps-row {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .tm-apps-row {
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 440px;
+        }
+
+        .tm-app-text {
+            padding: 7px 14px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+            letter-spacing: -0.1px;
+            white-space: nowrap;
+        }
+
+        .tm-app-text.more {
+            background: transparent;
+            border-color: transparent;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* ---------- Showcase: Push-to-talk visual ---------- */
+        .tm-ptt-visual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .tm-ptt-key {
+            min-width: 120px;
+            height: 80px;
+            padding: 0 28px;
+            background: linear-gradient(180deg, #fafafa, #dedede);
+            border: 1.5px solid #b8b8b4;
+            border-bottom-width: 4px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .tm-ptt-key.held {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+            background: linear-gradient(180deg, #e8e8e8, #d4d4d4);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .tm-ptt-key .label-top {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--orange);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .tm-ptt-key .key-char {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+        }
+
+        .tm-ptt-state {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 18px;
+            background: rgba(76, 217, 100, 0.15);
+            border: 1px solid rgba(76, 217, 100, 0.3);
+            border-radius: 100px;
+            color: #1E8E45;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .tm-ptt-state svg {
+            width: 14px; height: 14px;
+        }
+
+        .tm-ptt-state .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #4CD964;
+            box-shadow: 0 0 8px rgba(76, 217, 100, 0.6);
+            animation: tm-live-pulse 1.4s ease-in-out infinite;
+        }
+
+        @keyframes tm-live-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.9); }
+        }
+
+        /* ---------- Showcase: HUD states side by side ---------- */
+        .tm-hud-pair {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ---------- Settings window (mirrors SettingsView.swift) ---------- */
+        /* Real window is 450px, toolbar tabs at top, .formStyle(.grouped) body */
+        .tm-sw-body {
+            background: #1e1e24;
+            color: rgba(235, 235, 245, 0.92);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+            font-size: 13px;
+        }
+
+        /* Tab bar: padding 8v 12h, HStack with spacing 2 */
+        .tm-sw-tabs {
+            display: flex;
+            gap: 2px;
+            padding: 8px 12px;
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Tab: VStack 2-gap, Icon 18pt (h:22), Label 10pt; padding 6v */
+        .tm-sw-tab {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            padding: 6px 8px;
+            border-radius: 6px;
+            color: rgba(235, 235, 245, 0.55);
+            cursor: default;
+        }
+
+        .tm-sw-tab.active {
+            background: #0A84FF;
+            color: white;
+        }
+
+        .tm-sw-tab svg {
+            width: 18px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .tm-sw-tab-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        /* Content area: grouped form style with padding */
+        .tm-sw-content {
+            background: rgba(20, 20, 26, 0.65);
+            padding: 16px 20px 20px;
+        }
+
+        /* Section = one grouped section in the Form */
+        .tm-sw-section {
+            margin-bottom: 14px;
+        }
+
+        .tm-sw-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .tm-sw-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(235, 235, 245, 0.5);
+            padding: 0 4px 6px;
+            letter-spacing: 0.1px;
+        }
+
+        .tm-sw-section-body {
+            background: rgba(255, 255, 255, 0.04);
+            border: 0.5px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .tm-sw-item {
+            padding: 10px 14px;
+        }
+
+        .tm-sw-item + .tm-sw-item {
+            border-top: 0.5px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .tm-sw-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .tm-sw-row-label {
+            font-size: 13px;
+            color: rgba(235, 235, 245, 0.9);
+        }
+
+        /* macOS-style switch */
+        .tm-sw-switch {
+            width: 32px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.18);
+            border-radius: 100px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .tm-sw-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+            transition: left 0.2s;
+        }
+
+        .tm-sw-switch.on {
+            background: #34c759;
+        }
+
+        .tm-sw-switch.on::after {
+            left: 14px;
+        }
+
+        /* macOS-style picker button */
+        .tm-sw-picker {
+            background: rgba(255, 255, 255, 0.08);
+            border: 0.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: 5px;
+            padding: 3px 8px 3px 10px;
+            font-size: 12.5px;
+            color: rgba(235, 235, 245, 0.95);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: default;
+            max-width: 220px;
+        }
+
+        .tm-sw-picker span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .tm-sw-picker svg {
+            width: 9px;
+            height: 9px;
+            color: rgba(235, 235, 245, 0.5);
+            flex-shrink: 0;
+        }
+
+        /* Caption text below a row */
+        .tm-sw-caption {
+            font-size: 11px;
+            color: rgba(235, 235, 245, 0.5);
+            line-height: 1.45;
+            margin-top: 4px;
         }
 
         /* -- SECTION UTILITIES -- */
@@ -883,17 +1380,55 @@
     <!-- HERO -->
     <section class="hero">
         <div class="hero-content">
-            <h1>Universal Mic Mute <em>For Mac</em></h1>
-            <p class="hero-sub">One shortcut to mute your mic across every app. Always visible. Always ready.</p>
+            <h1>Your mic, <span class="underline-word">muted.<svg viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3,14 Q40,6 80,11 T160,9 Q180,8 197,11"/></svg></span></h1>
+            <p class="hero-sub">A universal mic mute for Mac.</p>
             <p class="hero-body">
-                <span class="brand-name">teenymute</span> lives in your menu bar and gives you a universal microphone mute toggle that works across Zoom, Meet, Teams, FaceTime, and every other mic-using app. Push-to-talk, global hotkey, HUD overlay. 3-day free trial, then $4.99 once.
+                <span class="brand-name">teenymute</span> lives in your menu bar with a single shortcut that mutes your microphone across every app that uses it. Global hotkey, push-to-talk, and HUD feedback. 3-day free trial, then $4.99 once.
             </p>
             <div class="hero-buttons">
                 <a href="downloads/TeenyMute.dmg" download class="btn btn-outline btn-large">Download App</a>
                 <a href="https://buy.polar.sh/polar_cl_LGGnszR5nHsuDiP5zukSuWXsi6lxI6nJp0y231xDZ2W" class="btn btn-primary btn-large">Purchase License: $4.99</a>
             </div>
-            <div class="hero-media fade-up">
-                <img src="images/screenshot-hero.webp" alt="teenymute menu bar showing microphone status indicator and dropdown controls">
+            <div class="hero-stage fade-up" aria-hidden="true">
+                <div class="tm-menubar">
+                    <span class="tm-mb-apple">
+                        <svg viewBox="0 0 14 14" fill="currentColor"><path d="M9.8 7.4c0-1.6 1.3-2.3 1.3-2.3-.7-1-1.9-1.2-2.3-1.2-1-.1-1.9.6-2.4.6s-1.3-.6-2.1-.6c-1.1 0-2.1.6-2.7 1.6-1.1 2-.3 4.9.9 6.5.5.8 1.2 1.7 2 1.6.8 0 1.1-.5 2.1-.5s1.3.5 2.1.5c.9 0 1.5-.8 2-1.6.6-.9.9-1.8.9-1.8s-1.8-.7-1.8-2.8zM8.1 2.6c.4-.5.7-1.2.6-1.9-.6 0-1.4.4-1.8.9-.4.4-.7 1.1-.6 1.8.7.1 1.4-.3 1.8-.8z"/></svg>
+                    </span>
+                    <span class="tm-mb-menu primary">Zoom</span>
+                    <span class="tm-mb-menu">Edit</span>
+                    <span class="tm-mb-menu">View</span>
+                    <span class="tm-mb-menu">Meeting</span>
+                    <span class="tm-mb-menu">Window</span>
+                    <span class="tm-mb-spacer"></span>
+                    <span class="tm-mb-app-icon muted" title="TeenyMute">
+                        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                            <path d="M7 2.5a2 2 0 0 1 4 0v5a2 2 0 0 1-4 0v-5z"/>
+                            <path d="M4 7a4 4 0 0 0 8 0M8 11v2M6 13h4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                            <path d="M3 3l10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <span class="tm-mb-status">
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+                            <path d="M1.5 6c4-3 9-3 13 0M3.5 8.5c3-2 6-2 9 0M5.5 11c2-1 3-1 5 0M8 13h.01"/>
+                        </svg>
+                    </span>
+                    <span class="tm-mb-status">
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2">
+                            <rect x="1.5" y="5" width="11" height="6" rx="1"/>
+                            <rect x="3" y="6.5" width="6" height="3" fill="currentColor"/>
+                            <path d="M14 7v2" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                    <span class="tm-mb-clock">9:41 AM</span>
+                </div>
+                <div class="tm-hud">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M9 3a3 3 0 0 1 6 0v7a3 3 0 0 1-6 0V3z"/>
+                        <path d="M5 10a7 7 0 0 0 14 0M12 17v4M8 21h8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                        <path d="M4 4l16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <span class="tm-hud-label">Muted</span>
+                </div>
             </div>
         </div>
     </section>
@@ -931,7 +1466,36 @@
                     <p>Press Option+Shift+M from anywhere to instantly mute or unmute your microphone, or set any custom shortcut you prefer. No need to find the right mute button in Zoom, Teams, or Meet. <span class="brand-name">teenymute</span> mutes at the system level so it works universally, and no Accessibility permissions are required.</p>
                 </div>
                 <div class="showcase-image">
-                    <img src="images/screenshot-hotkey.webp" alt="teenymute global hotkey muting microphone across Zoom and Teams">
+                    <div class="showcase-stage">
+                        <div class="tm-hotkey-visual">
+                            <div class="tm-keyrow">
+                                <div class="tm-key">
+                                    <span class="symbol">&#8997;</span>
+                                    <span class="label">OPTION</span>
+                                </div>
+                                <span class="tm-plus">+</span>
+                                <div class="tm-key">
+                                    <span class="symbol">&#8679;</span>
+                                    <span class="label">SHIFT</span>
+                                </div>
+                                <span class="tm-plus">+</span>
+                                <div class="tm-key">
+                                    <span class="symbol">M</span>
+                                    <span class="label">&nbsp;</span>
+                                </div>
+                            </div>
+                            <div class="tm-arrow-down" aria-hidden="true"></div>
+                            <div class="tm-apps-row">
+                                <span class="tm-app-text">Zoom</span>
+                                <span class="tm-app-text">Meet</span>
+                                <span class="tm-app-text">Teams</span>
+                                <span class="tm-app-text">FaceTime</span>
+                                <span class="tm-app-text">Discord</span>
+                                <span class="tm-app-text">Slack</span>
+                                <span class="tm-app-text more">and every other mic-using app</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -941,7 +1505,23 @@
                     <p>Hold the hotkey to temporarily unmute, release to re-mute. Perfect for noisy environments where you only want your mic live while you're speaking.</p>
                 </div>
                 <div class="showcase-image">
-                    <img src="images/screenshot-push-to-talk.webp" alt="teenymute push-to-talk mode indicator showing hold-to-unmute">
+                    <div class="showcase-stage">
+                        <div class="tm-ptt-visual">
+                            <div class="tm-ptt-key held">
+                                <span class="label-top">Hold</span>
+                                <span class="key-char">&#8997;&#8679;M</span>
+                            </div>
+                            <div class="tm-ptt-state">
+                                <span class="dot"></span>
+                                <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                    <path d="M7 2.5a2 2 0 0 1 2 0v5a1 1 0 0 1-2 0v-5z" fill-rule="evenodd"/>
+                                    <rect x="6" y="2" width="4" height="7" rx="2"/>
+                                    <path d="M4 7a4 4 0 0 0 8 0M8 11v2M6 13h4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                                </svg>
+                                You're speaking
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -951,7 +1531,25 @@
                     <p>A subtle on-screen overlay confirms your mic state every time you toggle. See it on any display, in any app, so you always know whether you're muted.</p>
                 </div>
                 <div class="showcase-image">
-                    <img src="images/screenshot-hud.webp" alt="teenymute HUD overlay showing muted confirmation on screen">
+                    <div class="showcase-stage">
+                        <div class="tm-hud-pair">
+                            <div class="tm-hud">
+                                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                    <rect x="9" y="2" width="6" height="11" rx="3"/>
+                                    <path d="M5 10a7 7 0 0 0 14 0M12 17v4M8 21h8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                                </svg>
+                                <span class="tm-hud-label">Unmuted</span>
+                            </div>
+                            <div class="tm-hud">
+                                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                    <rect x="9" y="2" width="6" height="11" rx="3"/>
+                                    <path d="M5 10a7 7 0 0 0 14 0M12 17v4M8 21h8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                                    <path d="M4 4l16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                <span class="tm-hud-label">Muted</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1045,7 +1643,116 @@
                     <div class="mac-dot green"></div>
                 </div>
                 <div class="mac-window-body">
-                    <img src="images/screenshot-settings.webp" alt="teenymute settings window showing hotkey configuration, mode selection, and input device picker">
+                    <div class="tm-sw-body">
+                        <div class="tm-sw-tabs">
+                            <div class="tm-sw-tab active" title="General">
+                                <svg viewBox="0 0 22 22" aria-hidden="true">
+                                    <circle cx="11" cy="11" r="3"/>
+                                    <path d="M11 2v2M11 18v2M2 11h2M18 11h2M4.8 4.8l1.4 1.4M15.8 15.8l1.4 1.4M4.8 17.2l1.4-1.4M15.8 6.2l1.4-1.4"/>
+                                </svg>
+                                <span class="tm-sw-tab-label">General</span>
+                            </div>
+                            <div class="tm-sw-tab" title="Keyboard">
+                                <svg viewBox="0 0 22 22" aria-hidden="true">
+                                    <rect x="2" y="5" width="18" height="12" rx="2"/>
+                                    <path d="M5.5 9.5h0M8.5 9.5h0M11.5 9.5h0M14.5 9.5h0M17.5 9.5h0M7 13.5h8"/>
+                                </svg>
+                                <span class="tm-sw-tab-label">Keyboard</span>
+                            </div>
+                            <div class="tm-sw-tab" title="License">
+                                <svg viewBox="0 0 22 22" aria-hidden="true">
+                                    <circle cx="8" cy="11" r="3.5"/>
+                                    <path d="M11.5 11h8M16 11v3M19 11v3"/>
+                                </svg>
+                                <span class="tm-sw-tab-label">License</span>
+                            </div>
+                            <div class="tm-sw-tab" title="About">
+                                <svg viewBox="0 0 22 22" aria-hidden="true">
+                                    <circle cx="11" cy="11" r="8.5"/>
+                                    <path d="M11 10v5.5M11 7v0.01"/>
+                                </svg>
+                                <span class="tm-sw-tab-label">About</span>
+                            </div>
+                            <div class="tm-sw-tab" title="More">
+                                <svg viewBox="0 0 22 22" aria-hidden="true">
+                                    <rect x="3" y="3" width="7" height="7" rx="1"/>
+                                    <rect x="12" y="3" width="7" height="7" rx="1"/>
+                                    <rect x="3" y="12" width="7" height="7" rx="1"/>
+                                    <rect x="12" y="12" width="7" height="7" rx="1"/>
+                                </svg>
+                                <span class="tm-sw-tab-label">More</span>
+                            </div>
+                        </div>
+
+                        <div class="tm-sw-content">
+                            <div class="tm-sw-section">
+                                <div class="tm-sw-section-title">Feedback</div>
+                                <div class="tm-sw-section-body">
+                                    <div class="tm-sw-item">
+                                        <div class="tm-sw-row">
+                                            <span class="tm-sw-row-label">Play sound on toggle</span>
+                                            <span class="tm-sw-switch on"></span>
+                                        </div>
+                                    </div>
+                                    <div class="tm-sw-item">
+                                        <div class="tm-sw-row">
+                                            <span class="tm-sw-row-label">Show overlay on toggle</span>
+                                            <span class="tm-sw-switch on"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tm-sw-section">
+                                <div class="tm-sw-section-title">Menu Bar</div>
+                                <div class="tm-sw-section-body">
+                                    <div class="tm-sw-item">
+                                        <div class="tm-sw-row">
+                                            <span class="tm-sw-row-label">Use white icon (no color)</span>
+                                            <span class="tm-sw-switch"></span>
+                                        </div>
+                                        <div class="tm-sw-caption">When on, the menu bar icon matches the menu bar text color instead of red/green.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tm-sw-section">
+                                <div class="tm-sw-section-title">Input Device</div>
+                                <div class="tm-sw-section-body">
+                                    <div class="tm-sw-item">
+                                        <div class="tm-sw-row">
+                                            <span class="tm-sw-row-label">Input</span>
+                                            <span class="tm-sw-picker">
+                                                <span>MacBook Pro Microphone</span>
+                                                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tm-sw-section">
+                                <div class="tm-sw-section-title">Startup</div>
+                                <div class="tm-sw-section-body">
+                                    <div class="tm-sw-item">
+                                        <div class="tm-sw-row">
+                                            <span class="tm-sw-row-label">Launch at login</span>
+                                            <span class="tm-sw-switch on"></span>
+                                        </div>
+                                    </div>
+                                    <div class="tm-sw-item">
+                                        <div class="tm-sw-row">
+                                            <span class="tm-sw-row-label">Microphone on launch</span>
+                                            <span class="tm-sw-picker">
+                                                <span>Muted</span>
+                                                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
